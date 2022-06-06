@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<!--    <button id="login" type="button" class="btn btn-login">Login</button>-->
+    {{#User}}
+    Hello {{User.nick}}
+    {{/User}}
+
+    <a href="/login" class="btn btn-info active" role="button">Login</a>
+    <h1>Hello, Welcome</h1>
+</body>
+</html>
