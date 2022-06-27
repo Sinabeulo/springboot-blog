@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Optional;
+
 @Slf4j
 @Controller
 public class HomeController {
 
     private MemberRepository memberRepository;
 
-    //private static Member loginMember = null;
+    private static Member loginMember = null;
 
     //@Autowired
     public HomeController(MemberRepository memberRepository) {
@@ -41,16 +43,30 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(Member member){
-        if(!memberRepository.login(member)){
-            log.info("login failed > {}",member);
+    public ModelAndView login(Member memberInfo){
+        Optional<Member> loginMemberOpt = null;
+        //Member loginMember = null;
+
+        if(!memberRepository.login(memberInfo)){
+            log.info("login failed > {}",memberInfo);
             return new ModelAndView("login");
             //return "login";
         }
 
-        log.info("login member > {}",member);
-        ModelAndView modelAndView = new ModelAndView("home","User",member);
-        //loginMember = member;
+        // there is a problem with 'member', because of login.mustache has not properties 'nick', 'id'
+        // so that we have to find a correct member
+        loginMemberOpt = memberRepository.findByLoginId(memberInfo.getUserId());
+
+        if(loginMemberOpt == null || loginMemberOpt.isEmpty()){
+            log.info("login failed > {} is not a member", memberInfo.getUserId());
+            return new ModelAndView("login");
+        }else{
+            loginMember = loginMemberOpt.get();
+        }
+
+        log.info("login member > {}",loginMember);
+        ModelAndView modelAndView = new ModelAndView("home","User",loginMember);
+
         return modelAndView;
     }
 
