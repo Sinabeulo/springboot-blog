@@ -8,9 +8,11 @@
 <!--    <button id="login" type="button" class="btn btn-login">Login</button>-->
     {{#User}}
     Hello {{User.nick}}
+        <a href="/logout" class="btn btn-info active" role="button">Logout</a>
     {{/User}}
-
-    <a href="/login" class="btn btn-info active" role="button">Login</a>
+    {{^User}}
+        <a href="/login" class="btn btn-info active" role="button">Login</a>
+    {{/User}}
     <h1>Hello, Welcome</h1>
 </body>
 </html>
