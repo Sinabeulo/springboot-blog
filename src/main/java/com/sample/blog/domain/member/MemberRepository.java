@@ -49,13 +49,13 @@ public class MemberRepository {
         return new ArrayList<>(store.values());
     }
 
-    public boolean login(Member memeber){
-        Optional<Member> checkMember = findByLoginId(memeber.userId);
+    public boolean login(Member member){
+        Optional<Member> checkMember = findByLoginId(member.userId);
         if(checkMember.isEmpty()) {
             return false;
         }
 
-        return checkMember.get().pw.equals(memeber.getPw());
+        return checkMember.get().pw.equals(member.getPw());
     }
 
     public void clearStore(){
